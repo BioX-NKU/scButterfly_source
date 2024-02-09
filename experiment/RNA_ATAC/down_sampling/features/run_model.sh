@@ -2,7 +2,7 @@
 
 FILE_PATH="/RNA_ATAC_output/down_sampling/features/B"
 mkdir "$FILE_PATH"
-for dataset in "MCC"
+for dataset in "CL"
 do
     for down_sample_rate in "0.2" "0.4" "0.6" "0.8" "1"
     do
@@ -17,7 +17,7 @@ do
 done
 FILE_PATH="/RNA_ATAC_output/down_sampling/features/C"
 mkdir "$FILE_PATH"
-for dataset in "MCC"
+for dataset in "CL"
 do
     for down_sample_rate in "0.2" "0.4" "0.6" "0.8" "1"
     do
@@ -32,7 +32,7 @@ do
 done
 FILE_PATH="/RNA_ATAC_output/down_sampling/features/T"
 mkdir "$FILE_PATH"
-for dataset in "MCC"
+for dataset in "CL"
 do
     for down_sample_rate in "0.2" "0.4" "0.6" "0.8" "1"
     do
