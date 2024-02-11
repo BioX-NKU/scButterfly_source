@@ -39,8 +39,6 @@ elif data in ['UP_eye', 'UP_pancreas', 'UP_muscle', 'UP_spleen', 'UP_stomach', '
     RNA_data.obs.index = pd.Series([str(i) for i in range(len(RNA_data.obs.index))])
     ATAC_data.obs.index = pd.Series([str(i) for i in range(len(ATAC_data.obs.index))])
 
-# Here combine is the integrated embedding using scglue, for usage of scglue, see in https://scglue.readthedocs.io/en/latest/tutorials.html
-
 ############################################################
 # Part 1 data processing
 RNA_data = RNA_data_preprocessing(
