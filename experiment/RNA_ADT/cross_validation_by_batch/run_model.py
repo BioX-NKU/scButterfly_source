@@ -135,8 +135,9 @@ if model_type == 'celltype_augmentation':
             random.shuffle(idx_temp)
             train_id_a.extend(idx_temp)
 
-sys.path.append('/home/atac2rna/program/atac2rna/Model/butterfly/experiment/RNA_ADT/')
 from train_model_cite import Model
+# If you want to use the scButterfly with the consideration of backrgound signals, please use the following command:
+# from train_model_cite_backrgound import Model
 import torch
 import torch.nn as nn
 
@@ -161,7 +162,7 @@ model = Model(
     R_encoder_act_list = [nn.LeakyReLU(), nn.LeakyReLU()],
     A_encoder_act_list = [nn.LeakyReLU(), nn.LeakyReLU()],
     R_decoder_act_list = [nn.LeakyReLU(), nn.LeakyReLU()],
-    A_decoder_act_list = [nn.LeakyReLU(), nn.LeakyReLU()],
+    A_decoder_act_list = [nn.LeakyReLU(), nn.Identity()],
     translator_embed_dim = 128, 
     translator_input_dim_r = 128,
     translator_input_dim_a = 128,
