@@ -19,6 +19,11 @@ We also provide [a software of scButterfly](https://github.com/BioX-NKU/scButter
 |   |---integrative_analysis              # integrative analysis in the BMMC dataset
 |   |---data_enhancement                  # data enhancement on the MK and MB datasets
 |   |
+|   |---batch_correction_step             # add batch correction step before training model
+|   |   |
+|   |   |---paired_data                   # add batch correction step for paired data
+|   |   |---unpaired_data                 # add batch correction step for unpaired data
+|   |
 |   |---down_sampling                     # down sampling for dataset
 |   |   |
 |   |   |---cells                         # down sampling for cells on the MCC dataset
