@@ -30,6 +30,10 @@ ATAC_data.obs.index = [str(i) for i in range(ATAC_data.X.shape[0])]
 # Part 2 split datasets
 from split_datasets import *
 id_list = unpaired_split_dataset_perturb(RNA_data, ATAC_data)
+
+# To avoid reusing for profiles of stimulated cells, please using the following command
+# id_list = unpaired_split_dataset_perturb_no_reusing(RNA_data, ATAC_data)
+
 train_id_r, train_id_a, validation_id_r, validation_id_a, test_id_r, test_id_a = id_list[int(number) - 1]
 
 from train_model_perturb import Model
@@ -44,7 +48,7 @@ A_kl_div = 1 / ATAC_input_dim * 20
 kl_div = R_kl_div + A_kl_div
 
 ############################################################
-# Part 4 construct model
+# Part 3 construct model
 model = Model(
     R_encoder_nlayer = 2, 
     A_encoder_nlayer = 2,
@@ -76,7 +80,7 @@ model = Model(
 )
 
 ############################################################
-# Part 5 train model
+# Part 4 train model
 
 model.train(
     R_encoder_lr = 0.001,
@@ -112,7 +116,7 @@ model.train(
 )
 
 ############################################################
-# Part 6 test model 
+# Part 5 test model 
 model.test(
     test_id_r = test_id_r,
     test_id_a = test_id_a, 
