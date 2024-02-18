@@ -16,6 +16,7 @@ We also provide [a software of scButterfly](https://github.com/BioX-NKU/scButter
 |   |---cross_validation_by_celltype      # three-fold cross-validation by cell type
 |   |---cross_validation_by_batch         # four-fold cross-validation by batch
 |   |---GO_analysis                       # gene ontology analysis on the MDS dataset
+|   |---TF_regulatory_network_inference   # TF regulatory network inference with DeepTFni on the PBMC dataset
 |   |---integrative_analysis              # integrative analysis in the BMMC dataset
 |   |---data_enhancement                  # data enhancement on the MK and MB datasets
 |   |
