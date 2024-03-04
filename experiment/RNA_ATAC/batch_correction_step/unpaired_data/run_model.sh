@@ -2,7 +2,7 @@
 
 FILE_PATH="/RNA_ATAC_output/batch_correction_step/unpaired_data"
 mkdir "$FILE_PATH"
-for dataset in "UP_HK" "UP_MPMC" "UP_eye" "UP_pancreas" "UP_muscle" "UP_spleen" "UP_stomach" "UP_thymus"
+for dataset in "UP_HK" "UP_MPMC" "simulated data" "UP_eye" "UP_pancreas" "UP_muscle" "UP_spleen" "UP_stomach" "UP_thymus"
 do
     mkdir "$FILE_PATH/$dataset"
     for number in "1" "2" "3" "4" "5"

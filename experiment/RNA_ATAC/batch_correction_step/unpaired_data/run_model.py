@@ -28,6 +28,15 @@ elif data == 'UP_MPMC':
     RNA_data.obs.index = pd.Series([str(i) for i in range(len(RNA_data.obs.index))])
     ATAC_data.obs.index = pd.Series([str(i) for i in range(len(ATAC_data.obs.index))])
 
+elif data == 'simulated data':
+
+    RNA_data = sc.read_h5ad('/RNA_ATAC_output/batch_correction_step/simulated_data/CL_simulated_rna_3000.h5ad')
+    ATAC_data = sc.read_h5ad('/RNA_ATAC_output/batch_correction_step/simulated_data/CL_simulated_atac_3000.h5ad')
+    ATAC_data_temp = sc.read_h5ad('/home/atac2rna/data/atac2rna/data/scCAT/cellline/ATAC_data.h5ad')
+    RNA_data.obs.index = pd.Series([str(i) for i in range(len(RNA_data.obs.index))])
+    ATAC_data.obs.index = pd.Series([str(i) for i in range(len(ATAC_data.obs.index))])
+    ATAC_data.var = ATAC_data_temp.var
+
 elif data in ['UP_eye', 'UP_pancreas', 'UP_muscle', 'UP_spleen', 'UP_stomach', 'UP_thymus']:
     
     organ = data.split('_')[1]
@@ -39,30 +48,7 @@ elif data in ['UP_eye', 'UP_pancreas', 'UP_muscle', 'UP_spleen', 'UP_stomach', '
     RNA_data.obs.index = pd.Series([str(i) for i in range(len(RNA_data.obs.index))])
     ATAC_data.obs.index = pd.Series([str(i) for i in range(len(ATAC_data.obs.index))])
 
-############################################################
-# batch correction step before training scButterfly
-import scanpy as sc
-import scgen
-import inmoose
-import numpy as np
-if 'batch' in RNA_data.obs.keys():
-    if len(RNA_data.obs.batch.cat.categories) > 1:
 
-        scgen.SCGEN.setup_anndata(RNA_data, batch_key="batch", labels_key="cell_type")
-        model = scgen.SCGEN(RNA_data)
-        model.train(
-            max_epochs=100,
-            batch_size=32,
-            early_stopping=True,
-            early_stopping_patience=25,
-        )
-        RNA_data.X = model.batch_removal().X
-        RNA_data.X = RNA_data.X - np.min(RNA_data.X)
-if 'batch' in ATAC_data.obs.keys():
-    if len(ATAC_data.obs.batch.cat.categories) > 1:
-        corrected_data = inmoose.pycombat.pycombat_norm(ATAC_data.X.toarray().T, list(ATAC_data.obs.batch))
-        ATAC_data.X = corrected_data.T
-        ATAC_data.X = (ATAC_data.X - np.min(ATAC_data.X))/(np.max(ATAC_data.X) - np.min(ATAC_data.X))
 
 ############################################################
 # Part 1 data processing
@@ -88,7 +74,30 @@ ATAC_data = ATAC_data_preprocessing(
     logging_path=file_path
 )[0]
 
+############################################################
+# batch correction step before training scButterfly
+import scanpy as sc
+import scgen
+import inmoose
+import numpy as np
+if 'batch' in RNA_data.obs.keys():
+    if len(RNA_data.obs.batch.cat.categories) > 1:
 
+        scgen.SCGEN.setup_anndata(RNA_data, batch_key="batch", labels_key="cell_type")
+        model = scgen.SCGEN(RNA_data)
+        model.train(
+            max_epochs=100,
+            batch_size=32,
+            early_stopping=True,
+            early_stopping_patience=25,
+        )
+        RNA_data.X = model.batch_removal().X
+        RNA_data.X = RNA_data.X - np.min(RNA_data.X)
+if 'batch' in ATAC_data.obs.keys():
+    if len(ATAC_data.obs.batch.cat.categories) > 1:
+        corrected_data = inmoose.pycombat.pycombat_norm(ATAC_data.X.toarray().T, list(ATAC_data.obs.batch))
+        ATAC_data.X = corrected_data.T
+        ATAC_data.X = (ATAC_data.X - np.min(ATAC_data.X))/(np.max(ATAC_data.X) - np.min(ATAC_data.X))
 ############################################################
 # Part 2 split datasets
 from split_datasets import *

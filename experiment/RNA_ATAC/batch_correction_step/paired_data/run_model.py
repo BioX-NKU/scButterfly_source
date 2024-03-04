@@ -31,30 +31,6 @@ elif data == 'MDS':
     RNA_data = sc.read_h5ad('/data/cabins/chenshengquan/scglue/Ma-2020-RNA.h5ad')
     ATAC_data = sc.read_h5ad('/data/cabins/chenshengquan/scglue/Ma-2020-ATAC.h5ad')
     
-############################################################
-# batch correction step before training scButterfly
-import scanpy as sc
-import scgen
-import inmoose
-import numpy as np
-if 'batch' in RNA_data.obs.keys():
-    if len(RNA_data.obs.batch.cat.categories) > 1:
-
-        scgen.SCGEN.setup_anndata(RNA_data, batch_key="batch", labels_key="cell_type")
-        model = scgen.SCGEN(RNA_data)
-        model.train(
-            max_epochs=100,
-            batch_size=32,
-            early_stopping=True,
-            early_stopping_patience=25,
-        )
-        RNA_data.X = model.batch_removal().X
-        RNA_data.X = RNA_data.X - np.min(RNA_data.X)
-if 'batch' in ATAC_data.obs.keys():
-    if len(ATAC_data.obs.batch.cat.categories) > 1:
-        corrected_data = inmoose.pycombat.pycombat_norm(ATAC_data.X.toarray().T, list(ATAC_data.obs.batch))
-        ATAC_data.X = corrected_data.T
-        ATAC_data.X = (ATAC_data.X - np.min(ATAC_data.X))/(np.max(ATAC_data.X) - np.min(ATAC_data.X))
 
 ############################################################
 # Part 1 data processing
@@ -80,6 +56,30 @@ ATAC_data = ATAC_data_preprocessing(
     logging_path=file_path
 )[0]
 
+############################################################
+# batch correction step before training scButterfly
+import scanpy as sc
+import scgen
+import inmoose
+import numpy as np
+if 'batch' in RNA_data.obs.keys():
+    if len(RNA_data.obs.batch.cat.categories) > 1:
+
+        scgen.SCGEN.setup_anndata(RNA_data, batch_key="batch", labels_key="cell_type")
+        model = scgen.SCGEN(RNA_data)
+        model.train(
+            max_epochs=100,
+            batch_size=32,
+            early_stopping=True,
+            early_stopping_patience=25,
+        )
+        RNA_data.X = model.batch_removal().X
+        RNA_data.X = RNA_data.X - np.min(RNA_data.X)
+if 'batch' in ATAC_data.obs.keys():
+    if len(ATAC_data.obs.batch.cat.categories) > 1:
+        corrected_data = inmoose.pycombat.pycombat_norm(ATAC_data.X.toarray().T, list(ATAC_data.obs.batch))
+        ATAC_data.X = corrected_data.T
+        ATAC_data.X = (ATAC_data.X - np.min(ATAC_data.X))/(np.max(ATAC_data.X) - np.min(ATAC_data.X))
 
 ############################################################
 # Part 2 split datasets
