@@ -31,6 +31,7 @@ experiment                                # experiemnt for scButterfly
 |   |
 |   |---GO_analysis                       # gene ontology analysis on the MDS dataset
 |   |---integrative_analysis              # integrative analysis in the BMMC dataset
+|   |---SNPsea_analysis                   # SNPsea analysis for translated profiles on the PBMC dataset
 |   |
 |   |---sensitive_analyses                # sensitive analyses for multiple hyperparameters
 |   |   |
